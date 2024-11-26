@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/main.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Book Reviews</h1>
+    <a href="/new" id="new">New</a>
+    </br>
+    <hr>
+    <div class="container">
+    <%if (reviews) {%>
+        <%reviews.forEach(review =>{%>
+            <img src=<%=review.cover_url%> alt="book cover">
+            <div class="item"><span class="title">Title: </span><%=review.title%></div>
+            <div class="item"><span class="title">Author: </span>Author: <%=review.author%></div>
+            <label for="review"><span class="title">Review: </span></label>
+            <div class="item" id="review"><%=review.review%></div>
+            <div class="item" id="rating"><spanc class="title">Rating: </span><%=review.rating%>/5</div>
+            <div class="items edits"><a href="/edit/<%=review.id%>" name="edit" id="edit">Edit</a></div>
+            
+            
+            </br>
+        <%});%>
+    <%}%>
+
+
+
+    </div>
+
+</body>
+</html>
+
