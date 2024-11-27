@@ -1,0 +1,19 @@
+In order for program to work,
+
+-make sure node is installed
+
+use command "npm i"
+
+In Postgres create database called books
+
+- change info in "db" object found at the top of index.js to your info,
+
+create table books
+
+id serial primary key,
+title text,
+author text,
+review text,
+author text,
+rating int,
+cover_url text

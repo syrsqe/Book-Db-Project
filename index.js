@@ -67,10 +67,9 @@ async function getBookInformation(title){
 
 }
 
+//home page
 app.get("/", async (req,res) =>{
-    console.log(await getBookCovers(1));
-    //console.log(reviews[0].rating);
-    //display all titles in database
+
    
 
     res.render("index.ejs", {reviews: reviews});
@@ -79,14 +78,17 @@ app.get("/", async (req,res) =>{
 });
 //inserts new review into database, retreives the cover image if it is acurate
 app.post("/new", async (req,res) => {
+
     const title = req.body.title;
     const review = req.body.review;
     const author = req.body.author;
     const rating = req.body.rating;
     const book = await getBookInformation(title);
-    const cover_id = `https://covers.openlibrary.org/b/iD/${book.cover_id}-M.jpg`
-    db.query("INSERT INTO books (title, author, review, rating, cover_url) values($1,$2,$3,$4,$5)",[title,author,review,rating,cover_id]);
-
+    const cover_url = `https://covers.openlibrary.org/b/iD/${book.cover_id}-M.jpg`
+    const newReview = await db.query("INSERT INTO books (title, author, review, rating, cover_url) values($1,$2,$3,$4,$5) RETURNING *",[title,author,review,rating,cover_url]);
+    console.log(newReview.rows[0].id);
+    reviews.push({id: newReview.rows[0].id, title: title, review: review, author: author, rating: rating, cover_url: cover_url});
+    res.redirect("/");
 });
 app.get("/new", (req,res) =>{
     //console.log(req.query.id);
@@ -98,7 +100,7 @@ app.get("/info", async (req,res) =>{
 
     const title = req.query.title;
     const book = await getBookInformation(title);
-    console.log(book);
+    //console.log(book);
     res.render("edit.ejs", {book: book, title:title});
     
 
@@ -107,10 +109,31 @@ app.get("/info", async (req,res) =>{
 
 app.get("/edit/:id", async (req,res)=>{
     const review = await db.query("Select * fROM books WHERE id = $1", [req.params.id]);
-    console.log(review.rows[0]);
+   // console.log(review.rows[0]);
+   // console.log(req.params.id);
+    res.render("edit.ejs", {review:review.rows[0], id: req.params.id});
+});
+app.post("/edit/:id", async (req,res)=>{
+    const title = req.body.title;
+    const review = req.body.review;
+    const author = req.body.author;
+    const rating = req.body.rating;
+    //console.log(title+review+author+rating);
     console.log(req.params.id);
-    res.render("edit.ejs", {review:review.rows[0]});
+    db.query("UPDATE books SET title = $1, review = $2, author = $3, rating =$4 WHERE id = $5",[title,review,author,rating,req.params.id]);
+    const index = await reviews.findIndex(review => review.id == req.params.id );
+    const cover_url = reviews[index].cover_url;
+    reviews[index] = {title: title,review: review,author: author,rating: rating, id: req.params.id, cover_url: cover_url};
+    
+    res.redirect("/");
 
+});
+app.get("/delete/:id", async(req,res)=>{
+    console.log(req.params.id);
+    db.query("DELETE FROM books where id = $1", [req.params.id]);
+    const index = await reviews.findIndex(review => review.id == req.params.id ); reviews.find
+    reviews.splice(index,1);
+    res.redirect("/");
 
 });
 app.listen(port, ()=>{

@@ -1,3 +1,67 @@
-.title{
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html{
+    margin: 0;
+    padding: 0;
+    /* box-sizing: border-box; */
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background-color: #f4f2e9;
+    margin: 0;
+    padding: 0;
+    height: 90px;
+    /* border-bottom: 1px solid black; */
+}
+h1{ 
+    font-family:'Garamond', Times, serif; 
+    font-size: 3rem;
+    font-weight: lighter;
+    margin: auto 0;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    flex:0 0 auto;
+    margin: 3% 5%;
+
+}
+.container img{
+    width: 100px;
+    height: auto;
+ }
+#new{
+    margin-bottom: 10px; 
+    width: fit-content;
+}
+.item{
+    margin: 5px 0 0 0;
+}
+#rLabel{
+    margin-top: 5px;
+}
+.button{
+    background-color: black;
+    color: white;
+    padding: 5px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+.edit{
+    margin-top: 10px;
+}
+span{
     font-weight: bold;
+}
+.edits *{
+    margin-top: 10px;
+}
+textarea{
+    /* height: 200px; */
 }
